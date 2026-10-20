@@ -42,3 +42,13 @@ The site currently uses ChatGPT Sites. `.openai/hosting.json` retains its existi
 See [PAYMENT_SETUP.md](PAYMENT_SETUP.md) for merchant approval, server secrets, authorised staff access, webhook configuration, sandbox testing and live activation requirements. Never put real API keys in browser code or source control.
 
 Company contact details, genuine product photographs and reviews, and commercial policies still require confirmation. Inspiration images and demonstration reviews are labelled accordingly.
+
+## Vercel deployment
+
+Import this repository into Vercel. The checked-in `vercel.json` sets the framework to Other, build command to `npm run build:vercel`, and output directory to `public`. No manual output-directory override is required.
+
+`npm run build:vercel` exports the unchanged storefront, payment interface preview, logo and favicon as static files. Clean URLs expose `/payment-preview`. The export includes no administration page, database records, secrets, Worker source or database migrations.
+
+`/payments` and `/admin/payments` redirect to the existing Sites-hosted backend, which retains its database, authenticated staff access and server-side verification. The payment flow runs on that existing domain. Vercel does not run the Cloudflare Worker or impersonate its authentication. Live payments remain disabled until the merchant setup and sandbox acceptance tests described in PAYMENT_SETUP.md are complete.
+
+The original `npm run build` still creates the Sites Worker. Moving the payment backend itself to Vercel would require a separate database/authentication migration, approved callback/webhook URLs and new acceptance testing. Do not put payment secrets in the static export or Vercel frontend variables.

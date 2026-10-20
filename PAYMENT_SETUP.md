@@ -74,3 +74,8 @@ npm run build
 npm test
 
 Build embeds the unchanged storefront, logo and payment routes in the Worker output. Migrations are in drizzle/ and copied into deployment metadata. Sites provisions D1 and applies migrations during publication. Tests use only ephemeral in-memory SQLite; no simulated customer records are seeded into the live database.
+
+
+## Vercel frontend export
+
+The Vercel build uses `npm run build:vercel` and `public/`. Only the unchanged storefront and design preview are exported. `/payments` and `/admin/payments` redirect to the existing Sites backend. Keep merchant API secrets, DB binding and authorised staff configuration on that backend. This configuration does not migrate live payment processing, data or authentication to Vercel and does not enable payments.
